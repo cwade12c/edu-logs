@@ -18,5 +18,21 @@ Net Upgrade Size:       0.00 MiB
 
 [wade@wbox edu-logs]$ sudo systemctl stop sshd
 
+[wade@wbox ssh]$ cd /etc/ssh
+
+[wade@wbox ssh]$ sudo sed -i 's/^#PermitRootLogin .*/PermitRootLogin no/g' sshd_config #Disable root from logging in
+
+[wade@wbox ssh]$ sudo sed -i 's/^#RSAAuthentication .*/RSAAuthentication yes/g' sshd_config
+
+[wade@wbox ssh]$ sudo sed -i 's/^#PubkeyAuthentication .*/PubkeyAuthentication yes/g' sshd_config #pubkey auth only
+
+[wade@wbox ssh]$ sudo sed -i 's/^PasswordAuthentication .*/PasswordAuthentication no/g' sshd_config #Disable password login (pubkey only)
+
+
+
+
+
+
+
 
 
