@@ -549,7 +549,17 @@ news=# INSERT INTO weather VALUES ('Seattle', 01, 24, 0.0, '2003-04-15');
 ERROR:  insert or update on table "weather" violates foreign key constraint "weather_city_fkey"
 DETAIL:  Key (city)=(Seattle) is not present in table "cities".
 
+news=# INSERT INTO cities VALUES('Seattle', Point(85.327892, 27.703744));
+INSERT 0 1
 
+news=# INSERT INTO weather VALUES ('Seattle', 01, 24, 0.0, '2003-04-15');
+INSERT 0 1
+
+news=# SELECT * FROM weather;
+  city   | temp_low | temp_high | prcp |    date    
+---------+----------+-----------+------+------------
+ Seattle |        1 |        24 |    0 | 2003-04-15
+(1 row)
 
 
 
