@@ -28,6 +28,14 @@ Net Upgrade Size:       0.00 MiB
 
 [wade@wbox ssh]$ sudo sed -i 's/^PasswordAuthentication .*/PasswordAuthentication no/g' sshd_config #Disable password login (pubkey only)
 
+[wade@wbox ssh]$ sudo systemctl start sshd
+
+[wade@wbox ssh]$ ssh -p 7331 wade@localhost
+The authenticity of host '[localhost]:7331 ([::1]:7331)' can't be established.
+ECDSA key fingerprint is a5:b8:a4:32:2a:d4:ed:33:84:cb:59:7d:a2:6a:82:5a.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '[localhost]:7331' (ECDSA) to the list of known hosts.
+Permission denied (publickey).
 
 
 
