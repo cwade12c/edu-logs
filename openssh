@@ -1,4 +1,14 @@
-sudo pacman -S openssh
+[wade@wbox tmp]$ cat Introduction 
+In this log, we will be exploring openssh, which is a suite of bins devoted toward encrypted communication
+between computers. Specifically:
+[*] the ssh client is used for connecting into remote devices,
+[*] the scp utility is used to securely copy files between devices,
+[*] the sftp tool is used for secure interactive file transfers,
+[*] the ssh-keygen tool generates cryptographic keys for ssh authentication,
+[*] the ssh-agent tool is a private key client that is used to interact with pubkey auth,
+[*] and the ssh-add tool is used to add a private key into the ssh authentication client.
+
+[wade@wbox edu-logs]$ sudo pacman -S openssh
 warning: openssh-6.4p1-1 is up to date -- reinstalling
 resolving dependencies...
 looking for inter-conflicts...
@@ -108,3 +118,16 @@ Linux haxme 3.8.0-19-generic
 user@haxme:~$ exit
 logout
 Connection to haxme.org closed.
+
+
+
+
+
+
+
+
+
+
+
+
+
