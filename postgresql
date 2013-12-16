@@ -1,4 +1,4 @@
-[wade@wbox edu-psql]$ cat Introduction 
+[wade@wbox tmp]$ cat Introduction 
 In this log, we will be exploring PostgreSQL, which is an object-relational database management system. 
 Its system architecture is based on a client/server model, in which the server process accepts connections 
 from client applications. 
@@ -6,7 +6,7 @@ from client applications.
 A lot of the practice stems directly out of the PostgreSQL interactive documentation, which can be found here: 
 http://www.postgresql.org/docs/9.3/interactive/index.html
 
-[wade@wbox edu-psql]$ cat Installation
+[wade@wbox tmp]$ cat Installation
 I am using pacman for my package manager; this will vary depending on your linux distrobution.
 Debian: apt-get install postgresql
 Arch: pacman -S postgresql
@@ -79,8 +79,15 @@ Success. You can now start the database server
 
 [wade@wbox tmp]$ sudo systemctl start postgresql
 
-[wade@wbox tmp]$ sudo su - postgres
-[postgres@wbox ~]$ psql -h localhost
+[wade@wbox tmp]$ cat Getting_Started
+To begin, let's add a new username, create a database, and assign privileges. 
+We use CREATE USER to add a new user;
+We use CREATE DATABASE or createdb to create a new database;
+We use GRANT to permit specific privs for a given user...
+
+[wade@wbox tmp]$ sudo su - postgres #switch to user "postgres" so we can add new users
+
+[postgres@wbox ~]$ psql -h localhost #-h <host> tells psql which host to connect to
 psql (9.3.2)
 Type "help" for help.
 
@@ -182,7 +189,7 @@ No relations found.
 
 postgres=# \q
 
-[postgres@wbox ~]$ psql jungle
+[postgres@wbox ~]$ psql jungle #this will connect to the database named "jungle"
 psql (9.3.2)
 Type "help" for help.
 
