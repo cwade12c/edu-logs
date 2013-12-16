@@ -586,3 +586,30 @@ news=# \d+
  public | cities  | table | wade  | 8192 bytes | Cities to monitor weather in
  public | weather | table | wade  | 8192 bytes | 
 (2 rows)
+
+news=# COMMENT ON TABLE weather IS 'tHiS iS a TyPo';
+COMMENT
+
+news=# \d+
+                              List of relations
+ Schema |  Name   | Type  | Owner |    Size    |         Description          
+--------+---------+-------+-------+------------+------------------------------
+ public | cities  | table | wade  | 8192 bytes | Cities to monitor weather in
+ public | weather | table | wade  | 8192 bytes | tHiS iS a TyPo
+(2 rows)
+
+news=# COMMENT ON TABLE weather IS NULL;
+COMMENT
+
+news=# \d+
+                              List of relations
+ Schema |  Name   | Type  | Owner |    Size    |         Description          
+--------+---------+-------+-------+------------+------------------------------
+ public | cities  | table | wade  | 8192 bytes | Cities to monitor weather in
+ public | weather | table | wade  | 8192 bytes | 
+(2 rows)
+
+news=# COMMENT ON TABLE weather IS 'Weather for permitted cities';
+COMMENT
+
+
