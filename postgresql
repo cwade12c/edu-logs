@@ -1,6 +1,7 @@
 [wade@wbox edu-psql]$ cat Introduction 
-In this log, we will be exploring PostgreSQL, which is an 
-object-relational database management system. Its system architecture is based on a client/server model, in which the server process accepts connections from client applications. 
+In this log, we will be exploring PostgreSQL, which is an object-relational database management system. 
+Its system architecture is based on a client/server model, in which the server process accepts connections 
+from client applications. 
 
 A lot of the practice stems directly out of the PostgreSQL interactive documentation, which can be found here: 
 http://www.postgresql.org/docs/9.3/interactive/index.html
