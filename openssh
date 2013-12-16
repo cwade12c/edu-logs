@@ -16,7 +16,7 @@ Net Upgrade Size:       0.00 MiB
 (1/1) checking available disk space                [######################] 100%
 (1/1) reinstalling openssh                         [######################] 100%
 
-
+[wade@wbox edu-logs]$ sudo systemctl stop sshd
 
 
 
