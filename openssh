@@ -1,0 +1,22 @@
+sudo pacman -S openssh
+warning: openssh-6.4p1-1 is up to date -- reinstalling
+resolving dependencies...
+looking for inter-conflicts...
+
+Packages (1): openssh-6.4p1-1
+
+Total Installed Size:   2.63 MiB
+Net Upgrade Size:       0.00 MiB
+
+:: Proceed with installation? [Y/n] y
+(1/1) checking keys in keyring                     [######################] 100%
+(1/1) checking package integrity                   [######################] 100%
+(1/1) loading package files                        [######################] 100%
+(1/1) checking for file conflicts                  [######################] 100%
+(1/1) checking available disk space                [######################] 100%
+(1/1) reinstalling openssh                         [######################] 100%
+
+
+
+
+
