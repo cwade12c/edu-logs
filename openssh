@@ -37,6 +37,83 @@ Are you sure you want to continue connecting (yes/no)? yes
 Warning: Permanently added '[localhost]:7331' (ECDSA) to the list of known hosts.
 Permission denied (publickey).
 
+[wade@wbox ssh]$ cd ~/.ssh
+
+[wade@wbox .ssh]$ mkdir localhost
+
+[wade@wbox .ssh]$ cd localhost/
+
+[wade@wbox localhost]$ ssh-keygen -t rsa -b 4096
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/wade/.ssh/id_rsa): keyname
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in keyname.
+Your public key has been saved in keyname.pub.
+The key fingerprint is:
+a8:04:e7:3c:47:2d:29:79:9b:ce:96:7a:6e:b3:d6:a8 wade@wbox
+The key's randomart image is:
++--[ RSA 4096]----+
+|                 |
+|     . o         |
+|  . + = .        |
+|   = + =         |
+|    = = S        |
+|   . * .         |
+|    . =o         |
+|     o* .        |
+|    E*oo         |
++-----------------+
+
+[wade@wbox localhost]$ ls
+keyname  keyname.pub
+
+[wade@wbox localhost]$ cat keyname.pub > ../authorized_keys #add public key to authorized_keys file
+
+[wade@wbox localhost]$ ssh-add keyname #add your priv key to the ssh agent
+Enter passphrase for keyname: 
+Identity added: keyname (keyname)
+
+[wade@wbox localhost]$ ssh -p 7331 wade@localhost #ssh into localhost as a test
+Last login: Sat Dec 14 00:04:30 2013 from 192.168.1.107
+
+[wade@wbox ~]$ exit
+logout
+Connection to localhost closed.
+
+[wade@wbox localhost]$ scp keyname.pub user@haxme.org:/home/user #copy pubkey to remote server
+keyname.pub                                   100%  735     0.7KB/s   00:00 
+
+[wade@wbox localhost]$ cat Then 
+ssh into the remote server and add the new pubkey to the authorized keys file. The location of
+this file varies based on your sshd configuration. 
+Please see: /etc/ssh/opensshd_config
+Find: AuthorizedKeysFile
+
+Some configurations may have one authorized_keys located in /etc/ssh, while others may
+have an individual one per user, something like $USER/.ssh/authorized_keys
+
+[wade@wbox localhost]$ uname -a
+Linux wbox 3.10.22-1
+
+[wade@wbox localhost]$ ssh user@haxme.org
+*******************************************************************************************
+                                   Welcome to HaxMe SSH.
+*******************************************************************************************
+Welcome to Ubuntu 13.04 
+
+user@haxme:~$ uname -a
+Linux haxme 3.8.0-19-generic
+
+user@haxme:~$ exit
+logout
+Connection to haxme.org closed.
+
+
+
+
+
+
 
 
 
