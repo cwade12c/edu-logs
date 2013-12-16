@@ -6,6 +6,12 @@ from client applications.
 A lot of the practice stems directly out of the PostgreSQL interactive documentation, which can be found here: 
 http://www.postgresql.org/docs/9.3/interactive/index.html
 
+[wade@wbox edu-psql]$ cat Installation
+I am using pacman for my package manager; this will vary depending on your linux distrobution.
+Debian: apt-get install postgresql
+Arch: pacman -S postgresql
+Gentoo: emerge --ask dev-db/postgresql-server
+
 [wade@wbox tmp]$ sudo pacman -S postgresql
 resolving dependencies...
 looking for inter-conflicts...
@@ -29,6 +35,9 @@ Optional dependencies for postgresql
     perl: for PL/Perl support [installed]
     tcl: for PL/Tcl support [installed]
     postgresql-old-upgrade: upgrade from previous major version using pg_upgrade
+
+[wade@wbox edu-psql]$ cat Configuration
+Next, we must create the postgresql conf file and start the service
 
 [wade@wbox tmp]$ sudo systemd-tmpfiles --create postgresql.conf
 
