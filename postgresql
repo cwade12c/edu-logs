@@ -1,0 +1,486 @@
+[wade@wbox edu-psql]$ cat Introduction 
+In this log, we will be exploring PostgreSQL, which is an 
+object-relational database management system. Its system architecture is based on a client/server model, in which the server process accepts connections from client applications. 
+
+A lot of the practice stems directly out of the PostgreSQL interactive documentation, which can be found here: 
+http://www.postgresql.org/docs/9.3/interactive/index.html
+
+[wade@wbox tmp]$ sudo pacman -S postgresql
+resolving dependencies...
+looking for inter-conflicts...
+
+Packages (1): postgresql-9.3.2-4
+
+Total Download Size:    4.75 MiB
+Total Installed Size:   22.55 MiB
+
+:: Proceed with installation? [Y/n] y
+:: Retrieving packages ...
+ postgresql-9.3.2-4-x86_64            4.7 MiB   325K/s 00:15 [################################] 100%
+(1/1) checking keys in keyring                               [################################] 100%
+(1/1) checking package integrity                             [################################] 100%
+(1/1) loading package files                                  [################################] 100%
+(1/1) checking for file conflicts                            [################################] 100%
+(1/1) checking available disk space                          [################################] 100%
+(1/1) installing postgresql                                  [################################] 100%
+Optional dependencies for postgresql
+    python2: for PL/Python support [installed]
+    perl: for PL/Perl support [installed]
+    tcl: for PL/Tcl support [installed]
+    postgresql-old-upgrade: upgrade from previous major version using pg_upgrade
+
+[wade@wbox tmp]$ sudo systemd-tmpfiles --create postgresql.conf
+
+[wade@wbox tmp]$ sudo su - postgres -c "initdb --locale en_US.UTF-8 -E UTF8 -D '/var/lib/postgres/data'"
+The files belonging to this database system will be owned by user "postgres".
+This user must also own the server process.
+
+The database cluster will be initialized with locale "en_US.UTF-8".
+The default text search configuration will be set to "english".
+
+Data page checksums are disabled.
+
+fixing permissions on existing directory /var/lib/postgres/data ... ok
+creating subdirectories ... ok
+selecting default max_connections ... 100
+selecting default shared_buffers ... 128MB
+creating configuration files ... ok
+creating template1 database in /var/lib/postgres/data/base/1 ... ok
+initializing pg_authid ... ok
+initializing dependencies ... ok
+creating system views ... ok
+loading system objects' descriptions ... ok
+creating collations ... ok
+creating conversions ... ok
+creating dictionaries ... ok
+setting privileges on built-in objects ... ok
+creating information schema ... ok
+loading PL/pgSQL server-side language ... ok
+vacuuming database template1 ... ok
+copying template1 to template0 ... ok
+copying template1 to postgres ... ok
+syncing data to disk ... ok
+
+WARNING: enabling "trust" authentication for local connections
+You can change this by editing pg_hba.conf or using the option -A, or
+--auth-local and --auth-host, the next time you run initdb.
+
+Success. You can now start the database server
+
+[wade@wbox tmp]$ sudo systemctl start postgresql
+
+[wade@wbox tmp]$ sudo su - postgres
+[postgres@wbox ~]$ psql -h localhost
+psql (9.3.2)
+Type "help" for help.
+
+postgres=# CREATE USER ape WITH PASSWORD 'banana';
+CREATE ROLE
+
+postgres=# CREATE DATABASE jungle;
+CREATE DATABASE
+
+postgres=# GRANT ALL PRIVILEGES ON DATABASE jungle TO ape;
+GRANT
+
+postgres=# \d
+No relations found.
+
+postgres=# \du
+                             List of roles
+ Role name |                   Attributes                   | Member of 
+-----------+------------------------------------------------+-----------
+ ape       |                                                | {}
+ postgres  | Superuser, Create role, Create DB, Replication | {}
+
+postgres=# \help
+Available help:
+  ABORT                            DEALLOCATE
+  ALTER AGGREGATE                  DECLARE
+  ALTER COLLATION                  DELETE
+  ALTER CONVERSION                 DISCARD
+  ALTER DATABASE                   DO
+  ALTER DEFAULT PRIVILEGES         DROP AGGREGATE
+  ALTER DOMAIN                     DROP CAST
+  ALTER EVENT TRIGGER              DROP COLLATION
+  ALTER EXTENSION                  DROP CONVERSION
+  ALTER FOREIGN DATA WRAPPER       DROP DATABASE
+  ALTER FOREIGN TABLE              DROP DOMAIN
+  ALTER FUNCTION                   DROP EVENT TRIGGER
+  ALTER GROUP                      DROP EXTENSION
+  ALTER INDEX                      DROP FOREIGN DATA WRAPPER
+  ALTER LANGUAGE                   DROP FOREIGN TABLE
+  ALTER LARGE OBJECT               DROP FUNCTION
+  ALTER MATERIALIZED VIEW          DROP GROUP
+  ALTER OPERATOR                   DROP INDEX
+  ALTER OPERATOR CLASS             DROP LANGUAGE
+  ALTER OPERATOR FAMILY            DROP MATERIALIZED VIEW
+  ALTER ROLE                       DROP OPERATOR
+  ALTER RULE                       DROP OPERATOR CLASS
+  ALTER SCHEMA                     DROP OPERATOR FAMILY
+  ALTER SEQUENCE                   DROP OWNED
+
+postgres=# \c jungle
+You are now connected to database "jungle" as user "postgres".
+
+jungle=# \q
+
+[postgres@wbox ~]$ psql -d jungle
+psql (9.3.2)
+Type "help" for help.
+
+jungle=# help
+You are using psql, the command-line interface to PostgreSQL.
+Type:  \copyright for distribution terms
+       \h for help with SQL commands
+       \? for help with psql commands
+       \g or terminate with semicolon to execute query
+       \q to quit
+
+jungle=# \?
+General
+  \copyright             show PostgreSQL usage and distribution terms
+  \g [FILE] or ;         execute query (and send results to file or |pipe)
+  \gset [PREFIX]         execute query and store results in psql variables
+  \h [NAME]              help on syntax of SQL commands, * for all commands
+  \q                     quit psql
+  \watch [SEC]           execute query every SEC seconds
+
+Query Buffer
+  \e [FILE] [LINE]       edit the query buffer (or file) with external editor
+  \ef [FUNCNAME [LINE]]  edit function definition with external editor
+  \p                     show the contents of the query buffer
+  \r                     reset (clear) the query buffer
+  \s [FILE]              display history or save it to file
+  \w FILE                write query buffer to file
+
+Input/Output
+  \copy ...              perform SQL COPY with data stream to the client host
+  \echo [STRING]         write string to standard output
+  \i FILE                execute commands from file
+  \ir FILE               as \i, but relative to location of current script
+  \o [FILE]              send all query results to file or |pipe
+
+jungle=# \q
+
+[postgres@wbox ~]$ psql -h localhost
+psql (9.3.2)
+Type "help" for help.
+
+postgres=# \dt
+No relations found.
+
+postgres=# \q
+
+[postgres@wbox ~]$ psql jungle
+psql (9.3.2)
+Type "help" for help.
+
+jungle=# SELECT version();
+                                      version                                      
+-----------------------------------------------------------------------------------
+ PostgreSQL 9.3.2 on x86_64-unknown-linux-gnu, compiled by gcc (GCC) 4.8.2, 64-bit
+(1 row)
+
+jungle=# SELECT current_date;
+    date    
+------------
+ 2013-12-15
+(1 row)
+
+jungle=# SELECT 2+2;
+ ?column? 
+----------
+        4
+(1 row)
+
+jungle=# CREATE TABLE gorillaWarfare (
+jungle(# name        varchar(80),
+jungle(# age         int,
+jungle(# date        date
+jungle(# );
+CREATE TABLE
+
+jungle=# CREATE TABLE gorillaFuckUp();
+CREATE TABLE
+
+jungle=# DROP TABLE gorillaFuckUp;
+DROP TABLE
+
+jungle=# \d
+             List of relations
+ Schema |     Name       | Type  |  Owner   
+--------+----------------+-------+----------
+ public | gorillawarfare | table | postgres
+(1 row)
+
+jungle=# INSERT INTO gorillawarfare VALUES ('ape', 69, '2013-12-15');
+
+jungle=# SELECT * FROM gorillawarfare;
+  name  | age |    date    
+--------+-----+------------
+  ape   |  69 | 2013-12-15
+(1 row)
+
+jungle=# \q
+
+[postgres@wbox ~]$ exit
+logout
+
+[wade@wbox tmp]$ echo "INSERT INTO gorillawarfare VALUES ('Mr. Jefferson, 200, '1776-1-1');" > sqlimport
+
+[wade@wbox tmp]$ psql jungle 
+psql (9.3.2)
+Type "help" for help.
+
+jungle=> COPY gorillawarfare FROM '/home/wade/tmp/sqlimport';
+ERROR:  must be superuser to COPY to or from a file
+HINT:  Anyone can COPY to stdout or from stdin. psql's \copy command also works for anyone.
+
+jungle=> \q
+[wade@wbox tmp]$ sudo su - postgres
+[postgres@wbox ~]$ psql -h localhost
+psql (9.3.2)
+Type "help" for help.
+
+postgres=# ALTER USER wade WITH SUPERUSER;
+ALTER ROLE
+postgres=# \q
+
+[postgres@wbox ~]$ exit
+logout
+
+[wade@wbox tmp]$ rm sqlimport 
+
+[wade@wbox tmp]$ echo "Jefferson:200:1776-1-1" > sqlimport
+
+[wade@wbox tmp]$ psql jungle
+psql (9.3.2)
+Type "help" for help.
+
+jungle=# \copy gorillawarfare FROM /home/wade/tmp/sqlimport DELIMITER ':'
+
+jungle=# SELECT * FROM gorillawarfare;
+   name    | age |    date    
+-----------+-----+------------
+ Jefferson | 200 | 1776-01-01
+ ape       |  69 | 2013-12-15
+(2 rows)
+
+jungle=# UPDATE gorillawarfare
+jungle-# SET name = 'bob'
+jungle-# WHERE name = 'ape';
+UPDATE 1
+
+jungle=# SELECT * FROM gorillawarfare;
+   name    | age |    date    
+-----------+-----+------------
+ Jefferson | 200 | 1776-01-01
+ bob       |  69 | 2013-12-15
+(2 rows)
+
+jungle=# SELECT age FROM gorillawarfare;
+ age 
+-----
+ 200
+  69
+(2 rows)
+
+jungle=# SELECT age, date FROM gorillawarfare;
+ age |    date    
+-----+------------
+ 200 | 1776-01-01
+  69 | 2013-12-15
+(2 rows)
+
+jungle=# SELECT name FROM gorillawarfare WHERE date <='2000-01-01';
+   name    
+-----------
+ Jefferson
+(1 row)
+
+jungle=# \set foo `echo "$(whoami)"` 
+
+jungle=# INSERT INTO gorillawarfare VALUES (:'foo', 30, '2013-12-15');
+INSERT 0 1
+
+jungle=# SELECT * FROM gorillawarfare;
+   name    | age |    date    
+-----------+-----+------------
+ Jefferson | 200 | 1776-01-01
+ bob       |  69 | 2013-12-15
+ wade      |  30 | 2013-12-15
+(3 rows)
+
+jungle=# UPDATE gorillawarfare
+jungle-# SET DATE = '2014-01-01'
+jungle-# WHERE name = 'wade';
+UPDATE 1
+
+jungle=# SELECT * FROM gorillawarfare;
+   name    | age |    date    
+-----------+-----+------------
+ Jefferson | 200 | 1776-01-01
+ bob       |  69 | 2013-12-15
+ wade      |  30 | 2014-01-01
+(3 rows)
+
+jungle=# SELECT max(age) FROM gorillawarfare;
+ max 
+-----
+ 200
+(1 row)
+
+jungle=# SELECT min(age) FROM gorillawarfare;
+ min 
+-----
+  30
+(1 row)
+
+jungle=# DELETE FROM gorillawarfare WHERE name='bob';
+DELETE 1
+
+jungle=# SELECT name FROM gorillawarfare
+jungle-# ;
+   name    
+-----------
+ Jefferson
+ wade
+(2 rows)
+
+jungle=# DELETE FROM gorillawarfare;
+DELETE 2
+
+jungle=# SELECT * FROM gorillawarfare;
+ name | age | date 
+------+-----+------
+(0 rows)
+
+jungle=# \q
+
+[wade@wbox tmp]$ sudo su - postgres
+[sudo] password for wade: 
+[postgres@wbox ~]$ psql -h localhost
+psql (9.3.2)
+Type "help" for help.
+
+postgres=# DROP DATABASE jungle;
+DROP DATABASE
+
+postgres=# \q
+
+[postgres@wbox ~]$ psql jungle
+psql: FATAL:  database "jungle" does not exist
+
+[postgres@wbox ~]$ createdb users
+
+[postgres@wbox ~]$ exit
+logout
+
+[wade@wbox tmp]$ psql users
+psql (9.3.2)
+Type "help" for help.
+        ^
+users=# CREATE TABLE users(
+name varchar(80),
+age int,
+date date);
+CREATE TABLE
+
+users=# INSERT INTO users VALUES ('wade', 25, '1980-01-01');
+INSERT 0 1
+
+users=# SELECT * FROM users;
+ name | age |    date    
+------+-----+------------
+ wade |  25 | 1980-01-01
+(1 row)
+
+users=# CREATE DATABASE dummy;
+CREATE DATABASE
+
+users=# \q
+
+[wade@wbox tmp]$ dropdb dummy
+
+[wade@wbox tmp]$ psql dummy
+psql: FATAL:  database "dummy" does not exist
+
+[wade@wbox tmp]$ psql users
+psql (9.3.2)
+Type "help" for help.
+
+users=# CREATE TABLE weather(
+users(# city varchar(80),
+users(# temp_low int,
+users(# temp_high int,
+users(# date date);
+CREATE TABLE
+
+users=# INSERT INTO weather VALUES('San Francisco', 46, 50, '1994-11-27');
+INSERT 0 1
+users=# INSERT INTO weather VALUES('Hayward', 35, 52, '1994-11-29');
+INSERT 0 1
+
+users=# \d
+        List of relations
+ Schema |  Name   | Type  | Owner 
+--------+---------+-------+-------
+ public | users   | table | wade
+ public | weather | table | wade
+(2 rows)
+
+users=# SELECT * FROM weather
+users-# ;
+     city      | temp_low | temp_high |    date    
+---------------+----------+-----------+------------
+ San Francisco |       46 |        50 | 1994-11-27
+ Hayward       |       35 |        52 | 1994-11-29
+(2 rows)
+
+users=# UPDATE weather
+SET temp_high = temp_high+5, temp_low = temp_low-temp_high
+WHERE date > '1994-11-28';
+UPDATE 1
+
+users=# SELECT * FROM weather;
+     city      | temp_low | temp_high |    date    
+---------------+----------+-----------+------------
+ San Francisco |       46 |        50 | 1994-11-27
+ Hayward       |      -17 |        57 | 1994-11-29
+(2 rows)
+
+users=# CREATE VIEW quickview AS
+SELECT city, temp_low, temp_high 
+FROM weather;
+CREATE VIEW
+
+users=# SELECT * FROM quickview;
+     city      | temp_low | temp_high 
+---------------+----------+-----------
+ San Francisco |       46 |        50
+ Hayward       |      -17 |        57
+(2 rows)
+
+users=# ALTER VIEW quickview RENAME TO cityv;
+ALTER VIEW
+
+users=# SELECT * FROM quickview;
+ERROR:  relation "quickview" does not exist
+LINE 1: SELECT * FROM quickview;
+                      ^
+users=# SELECT * FROM cityv;
+     city      | temp_low | temp_high 
+---------------+----------+-----------
+ San Francisco |       46 |        50
+ Hayward       |      -17 |        57
+(2 rows)
+
+users=# DROP VIEW cityv;
+DROP VIEW
+
+users=# SELECT * FROM cityv;
+ERROR:  relation "cityv" does not exist
+LINE 1: SELECT * FROM cityv;
+
+
