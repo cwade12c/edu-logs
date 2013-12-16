@@ -493,4 +493,65 @@ users=# SELECT * FROM cityv;
 ERROR:  relation "cityv" does not exist
 LINE 1: SELECT * FROM cityv;
 
+users-# \q
+
+[wade@wbox tmp]$ sudo su - postgres
+[sudo] password for wade: 
+
+[postgres@wbox ~]$ psql -h localhost
+psql (9.3.2)
+Type "help" for help.
+
+postgres=# DROP TABLE tribalwarfare;
+DROP TABLE
+
+postgres=# DROP DATABASE users;
+
+postgres=# \list
+                                  List of databases
+   Name    |  Owner   | Encoding |   Collate   |    Ctype    |   Access privileges   
+-----------+----------+----------+-------------+-------------+-----------------------
+ postgres  | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ template0 | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+           |          |          |             |             | postgres=CTc/postgres
+ template1 | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+           |          |          |             |             | postgres=CTc/postgres
+(3 rows)
+
+postgres=# \dt
+No relations found.
+
+postgres=# CREATE DATABASE news;
+CREATE DATABASE
+
+postgres=# \q
+
+[postgres@wbox ~]$ exit
+logout
+
+[wade@wbox tmp]$ psql news
+psql (9.3.2)
+Type "help" for help.
+
+news=# CREATE TABLE cities(
+news(# city varchar(80) primary key,
+news(# location point);
+CREATE TABLE
+
+news=# CREATE TABLE weather(
+news(# city varchar(80) references cities(city),
+news(# temp_low int, temp_high int,
+news(# prcp real,
+news(# date date);
+CREATE TABLE
+
+news=# INSERT INTO weather VALUES ('Seattle', 01, 24, 0.0, '2003-04-15');
+ERROR:  insert or update on table "weather" violates foreign key constraint "weather_city_fkey"
+DETAIL:  Key (city)=(Seattle) is not present in table "cities".
+
+
+
+
+
+
 
