@@ -567,3 +567,22 @@ news=# SELECT * FROM weather;
 ---------+----------+-----------+------+------------
  Seattle |        1 |        24 |    0 | 2003-04-15
 (1 row)
+
+news=# COMMENT ON TABLE cities IS 'Cities to monitor weather in';
+COMMENT
+
+news=# \d
+        List of relations
+ Schema |  Name   | Type  | Owner 
+--------+---------+-------+-------
+ public | cities  | table | wade
+ public | weather | table | wade
+(2 rows)
+
+news=# \d+
+                              List of relations
+ Schema |  Name   | Type  | Owner |    Size    |         Description          
+--------+---------+-------+-------+------------+------------------------------
+ public | cities  | table | wade  | 8192 bytes | Cities to monitor weather in
+ public | weather | table | wade  | 8192 bytes | 
+(2 rows)
